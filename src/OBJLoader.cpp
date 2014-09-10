@@ -14,7 +14,7 @@ Mesh loadOBJ() {
         std::stringstream linestream(line);
         char pre;
         //float val1;
-       // float val2;
+        //float val2;
         //float val3;
 
         // Read the values into the variables using the operator >>
