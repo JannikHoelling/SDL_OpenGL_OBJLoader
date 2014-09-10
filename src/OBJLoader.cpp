@@ -4,7 +4,7 @@
 Mesh loadOBJ() {
     std::vector<glm::vec3> vertices;
 
-    std::ifstream file("dragon.obj");
+    std::ifstream file("buddha.obj");
     std::string line;
 
     while(std::getline(file, line))
