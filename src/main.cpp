@@ -163,8 +163,8 @@ void render() {
 }
 
 void update() {
-    cam.camAngle += 0.05f;
-    cam.position = glm::vec3(cos(cam.camAngle) * 1, 0.25f , sin(cam.camAngle) * 1);
+    cam.camAngle += 0.01f;
+    cam.position = glm::vec3(cos(cam.camAngle) * 2, 1.5f , sin(cam.camAngle) * 2);
 
 	cam.viewMatrix = glm::translate(cam.viewMatrix, cam.position);
 	cam.viewMatrix = glm::lookAt(cam.position, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
