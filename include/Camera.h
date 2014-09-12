@@ -1,6 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include <GL/glew.h>
+
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -13,6 +15,8 @@ class Camera
         float fieldOfView;
         glm::mat4 projectionMatrix;
         glm::mat4 viewMatrix;
+        GLint projectionMatrixLocation;
+        GLint viewMatrixLocation;
         float camAngle = 0;
 };
 

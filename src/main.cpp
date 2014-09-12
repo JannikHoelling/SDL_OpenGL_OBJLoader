@@ -2,7 +2,6 @@
 #include "GLShader.h"
 #include "Camera.h"
 #include "Mesh.h"
-#include "OBJLoader.h"
 
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
@@ -18,19 +17,12 @@ SDL_GLContext gContext;
 GLuint shaderProgram = 0;
 
 // TODO: Move to Camera class
-glm::mat4 projectionMatrix;
-glm::mat4 viewMatrix;
-GLint projectionMatrixLocation;
-GLint viewMatrixLocation;
 
-//TEST
-//GLuint vbo;
-//glm::vec3 test = glm::vec3(0.0f, 0.0f, 0.0f);
-std::vector<glm::vec3> test { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.25f, 0.0f, 0.0f) };
+// TODO: Move to Mesh class
+
 
 Camera cam = Camera(60.0f, 0.0f, 0.25f, 55.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
 Mesh m;
-//std::vector<int> v { 34,23 };
 
 bool init()
 {
@@ -121,18 +113,12 @@ bool initShaders() {
     glCheckError(glGetError(), "Load Program");
 
 	//Get locations of view and projection matrices
-	projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
-	viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
+	cam.projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
+	cam.viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
 
-    //m = Mesh(test);
     m = loadOBJ();
 
-    // VBO
-    //glGenBuffers(1, &vbo );
-	//glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3), &test, GL_DYNAMIC_DRAW);
-
-	if(projectionMatrixLocation < 0 || viewMatrixLocation < 0) {
+	if(cam.projectionMatrixLocation < 0 || cam.viewMatrixLocation < 0) {
 		printf("Matrix Locations not found in program!\n");
 		return false;
 	}
@@ -149,14 +135,16 @@ void handleKeys( unsigned char key, int x, int y )
 }
 
 void render() {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(shaderProgram);
 
-    glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &cam.projectionMatrix[0][0]);
-    glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &cam.viewMatrix[0][0]);
+    glUniformMatrix4fv(cam.projectionMatrixLocation, 1, GL_FALSE, &cam.projectionMatrix[0][0]);
+    glUniformMatrix4fv(cam.viewMatrixLocation, 1, GL_FALSE, &cam.viewMatrix[0][0]);
 
-    m.render();
+    m.render(shaderProgram);
+
     glCheckError(glGetError(), "Render Mesh");
 
     glUseProgram(0);
@@ -167,7 +155,7 @@ void update() {
     cam.position = glm::vec3(cos(cam.camAngle) * 2, 1.5f , sin(cam.camAngle) * 2);
 
 	cam.viewMatrix = glm::translate(cam.viewMatrix, cam.position);
-	cam.viewMatrix = glm::lookAt(cam.position, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	cam.viewMatrix = glm::lookAt(cam.position, glm::vec3(0.0f, 0.75f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void close()
@@ -223,7 +211,6 @@ int main( int argc, char* args[] )
 			update();
 
 			render();
-
 
 			//Update screen
 			SDL_GL_SwapWindow( gWindow );
