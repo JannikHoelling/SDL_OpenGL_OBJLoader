@@ -241,15 +241,15 @@ void glCheckError(GLenum error, std::string location) {
 	case GL_NO_ERROR:
 		return;
 	case GL_INVALID_ENUM:
-		errorName = "GL_INVALID_ENUM"; exit(1); break;
+		errorName = "GL_INVALID_ENUM"; break;
 	case GL_INVALID_VALUE:
-		errorName = "GL_INVALID_VALUE"; exit(1); break;
+		errorName = "GL_INVALID_VALUE"; break;
 	case GL_INVALID_OPERATION:
-		errorName = "GL_INVALID_OPERATION"; exit(1); break;
+		errorName = "GL_INVALID_OPERATION"; break;
 	case GL_INVALID_FRAMEBUFFER_OPERATION:
-		errorName = "GL_INVALID_FRAMEBUFFER_OPERATION"; exit(1); break;
+		errorName = "GL_INVALID_FRAMEBUFFER_OPERATION"; break;
 	case GL_OUT_OF_MEMORY:
-		errorName = "GL_OUT_OF_MEMORY"; exit(1); break;
+		errorName = "GL_OUT_OF_MEMORY"; break;
 	}
 
 	std::cerr << location << ": " << errorName << std::endl;

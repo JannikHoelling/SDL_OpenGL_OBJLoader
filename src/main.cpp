@@ -6,6 +6,7 @@
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
 const bool useAntialiasing = true;
+bool wireFrame = false;
 
 const char* windowTitle = "SDL_OpenGL_OBJLoader";
 
@@ -15,11 +16,6 @@ SDL_GLContext gContext;
 
 //OpenGL
 GLuint shaderProgram = 0;
-
-// TODO: Move to Camera class
-
-// TODO: Move to Mesh class
-
 
 Camera cam = Camera(60.0f, 0.0f, 0.25f, 55.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
 Mesh m;
@@ -42,7 +38,7 @@ bool init()
 		//Anti Aliasing
 		if(useAntialiasing) {
 			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
 		}
 
 		SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
@@ -132,11 +128,22 @@ void handleKeys( unsigned char key, int x, int y )
 	{
 		Screenshot(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, "test.bmp");
 	}
+    if( key == 'f') {
+        wireFrame = !wireFrame;
+    }
 }
 
 void render() {
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glCullFace(GL_BACK);
+    if(wireFrame) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+    else {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
 
     glUseProgram(shaderProgram);
 

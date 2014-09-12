@@ -27,8 +27,8 @@ Mesh::Mesh(std::vector<float> vertices, std::vector<float> uvs, std::vector<unsi
 }
 
 void Mesh::render(GLuint shaderProgram) {
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    //glCullFace(GL_BACK);
+    //
+    //
 
     glBindTexture( GL_TEXTURE_2D, texture );
     GLint textureLocation = glGetUniformLocation(shaderProgram, "texture");
@@ -37,8 +37,7 @@ void Mesh::render(GLuint shaderProgram) {
     glBindBuffer(GL_ARRAY_BUFFER, vboID);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    //glEnableVertexAttribArray(1);
-    //glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)sizeof(glm::vec4));
+
     glBindBuffer(GL_ARRAY_BUFFER, uvID);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
